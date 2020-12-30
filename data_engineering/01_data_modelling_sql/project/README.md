@@ -13,4 +13,4 @@ This project can be divided into 2 main modules, which we will see in details:
 - There are 4 dimension tables viz: users, songs, artists and time.
 - Following is the start schema diagram which dpecits the data model, tables and their relationship.
 
-<img src="images/relational_model.png" width="250" height="250">
+<img src="https://github.com/santoshjoshigithub/udacity/blob/master/data_engineering/01_data_modelling_sql/images/relational_model.png" width="250" height="250">
