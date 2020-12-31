@@ -11,13 +11,13 @@ time_table_drop = "drop table if exists time"
 songplay_table_create = ("""
     create table if not exists songplays 
         (
-            songplay_id int primary key, 
-            start_time time , 
-            user_id int, 
+            songplay_id serial primary key, --converted data type from int to serial
+            start_time time not null, --added NOT NULL constraint
+            user_id int not null, --added NOT NULL constraint
             level varchar, 
             song_id varchar, 
             artist_id varchar, 
-            session_id int, 
+            session_id int not null, --added NOT NULL constraint
             location varchar, 
             user_agent varchar
         )
@@ -73,7 +73,6 @@ time_table_create = ("""
 songplay_table_insert = ("""
     insert into songplays
         (
-            songplay_id, 
             start_time, 
             user_id, 
             level,
@@ -83,7 +82,7 @@ songplay_table_insert = ("""
             location,
             user_agent
         ) 
-    values(%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (songplay_id) DO NOTHING;
+    values(%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (songplay_id) DO NOTHING;
 """)
 
 user_table_insert = ("""
@@ -95,7 +94,7 @@ user_table_insert = ("""
         gender,
         level
     ) 
-    values (%s, %s, %s, %s, %s) ON CONFLICT (user_id) DO NOTHING;
+    values (%s, %s, %s, %s, %s) ON CONFLICT (user_id) DO UPDATE SET level = EXCLUDED.level;
 """)
 
 song_table_insert = ("""
@@ -143,11 +142,10 @@ song_select = ("""
             a.artist_id 
     from 
         songs as s 
-        left outer join artists as a on s.artist_id = a.artist_id 
+        inner join artists as a on s.artist_id = a.artist_id 
     where 
         s.title = %s and 
-        a.name = %s and 
-        s.duration = %s 
+        a.name = %s
 """)
 
 # QUERY LISTS

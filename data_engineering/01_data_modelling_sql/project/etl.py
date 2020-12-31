@@ -6,6 +6,10 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
+    """
+    - reads the json file based on the input parameter filepath
+    - extracts the required fields and inserts data into songs and artists dimesnion tables.
+    """
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -19,6 +23,11 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """
+    - reads the json file based on the input parameter filepath
+    - process the json file and inserts data into users and time dimesnion tables. 
+    - It then also inserts data into the songplay table which is a fact table.
+    """
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -47,7 +56,8 @@ def process_log_file(cur, filepath):
     for index, row in df.iterrows():
         
         # get songid and artistid from song and artist tables
-        cur.execute(song_select, (row.song, row.artist, row.length))
+        #cur.execute(song_select, (row.song, row.artist, row.length))
+        cur.execute(song_select, (row.song, row.artist))
         results = cur.fetchone()
         
         if results:
@@ -56,12 +66,16 @@ def process_log_file(cur, filepath):
             songid, artistid = None, None
 
         # insert songplay record
-        songplay_data = (index, pd.to_datetime(row.ts, unit='ms'), row.userId, row.level,\
+        songplay_data = (pd.to_datetime(row.ts, unit='ms'), row.userId, row.level,\
                          songid, artistid, row.sessionId, row.location, row.userAgent)
         cur.execute(songplay_table_insert, songplay_data)
 
 
 def process_data(cur, conn, filepath, func):
+    """
+    - gets all the json file based on the filepath parameter
+    - it processes each json file and pass it to a function which either could be process_song_file or process_log_file                     function.
+    """
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -81,6 +95,9 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    """
+    The main function establishes connection with the sparkifydb and processes song and log file data sequentially.
+    """
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 

@@ -15,7 +15,7 @@ Sparkify is a startup company and they are collecting data for songs and user ac
 - There are 4 dimension tables viz: users, songs, artists and time.
 - Following is the star schema diagram.
 
-<img src="https://github.com/santoshjoshigithub/udacity/blob/master/data_engineering/01_data_modelling_sql/images/relational_model.png" width="1000	" height="500">
+<img src="https://raw.githubusercontent.com/santoshjoshigithub/udacity/master/data_engineering/01_data_modelling_sql/images/relational_model.png" width="1000	" height="500">
 
 ### 3. Data Pipeline:
 - The data pipeline is built using Python modules.
@@ -35,6 +35,6 @@ Sparkify is a startup company and they are collecting data for songs and user ac
 - Go to the launcher in the Jupyter lab of Udacity project enviroment.
 - Open the Terminal and run create_tables.py (>python create_tables.py and then hit run)
 - You can execute create_tables.py file from the terminal whenever you start data loading, this will drop and recreate all the tables again for you.
-- Sometimes you may encounter errors while running create_tables.py, it probably coz of the existing connection open, then go to any of the notebook file and restart the kernel, this will reset the connection and the error probably would vanish.
+- Sometimes you may encounter errors while running create_tables.py, it probably coz of the existing connection open, then go to any of the notebook file and restart the kernel, this will reset the connection and the error probably would vanish. "Error Example: psycopg2.OperationalError: sparkifydb is being accessed by another user..."
 - To load data from the JSON files, runetl.py file from the terminal.
 - For verification of the data, use test.ipynb file and see if data has been loaded or not.
